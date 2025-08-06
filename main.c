@@ -32,7 +32,7 @@ int main(void){
     float grad = 0.0f;
 
     for (int i=0; i < N_SAMPLES; ++i){
-      float x = and_gate[i][0];
+      float x = and_gate[i][0]; // make a variadic macro to generalize the way this works
       float y = and_gate[i][1];
       float y_hat = x * weight;
       float error = y_hat - y; //maybe do abs later
