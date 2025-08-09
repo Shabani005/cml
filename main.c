@@ -13,7 +13,6 @@ sample and_gate[] =
   {2.0f, 4.0f},
   {3.0f, 6.0f},
   {5.0f, 10.0f},
-  {100.0f, 200.0f}
 };
 
 // I may not need to specify size and use the sizeof trick inside the function
@@ -72,11 +71,16 @@ int main(void){
     grad /= N_SAMPLES;
     
     weight -= LEARNING_R*grad;
-    if (epoch % EPOCHS/10 == 0){
+    if (epoch % (EPOCHS/10) == 0){
       printf("Epoch: %d Loss: %f Weight: %f\n", epoch, total_loss, weight);
     }
+    
+    //if ( epoch+1/EPOCHS == 1 ){
+      //printf("Last Epoch\n=======\nEpoch: %d Loss: %f Weight: %f\n", epoch, total_loss, weight);
+      //break;
+    //}
   }
-  printf("\nTrained weight: %f\n", weight);
+    printf("\nTrained weight: %f\n", weight);
   
   for (int i = 0; i < N_SAMPLES; ++i) {
       float x = and_gate[i][0];
