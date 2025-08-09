@@ -8,15 +8,14 @@ typedef float sample[5];
 
 sample and_gate[] =
 {
-  {1.0f, 2.0f, 3.0f, 5.0f, 1000.0f}, // x
-  {2.0f, 4.0f, 6.0f, 10.0f, 2000.0f}, // y
+  {1.0f, 2.0f, 3.0f, 5.0f, 10.0f}, // x
+  {2.0f, 4.0f, 6.0f, 10.0f, 20.0f}, // y
   };
 
 // I may not need to specify size and use the sizeof trick inside the function
 float normalizef(float array[], size_t size){
   float highest = array[0];
   float lowest = array[0];
-  size_t sizet = sizeof(float*)/sizeof(float);
 
   for( size_t i=0; i < size; ++i){
    if (array[i] > highest){
@@ -26,14 +25,10 @@ float normalizef(float array[], size_t size){
       lowest = array[i];
     }
   }
-  printf("lowest: %f\nhighest: %f\n", lowest, highest);
     for (size_t i = 0; i < size; ++i) {
         array[i] = (array[i] - lowest) / (highest - lowest);
     }
-      for (size_t i = 0; i < size; ++i) {
-         printf("%f\n", array[i]);
-   }
-  return *array;
+        return *array;
   }
 
 #define normalize(arr) normalizef((arr), sizeof(arr) / sizeof((arr)[0]))
@@ -42,7 +37,7 @@ float normalizef(float array[], size_t size){
 
 #define N_SAMPLES 4 // auto later 
 #define LEARNING_R 0.01f
-#define EPOCHS 1000000
+#define EPOCHS 1000
 
 float random_float(){
     return (float) rand() / (float) RAND_MAX;
@@ -70,7 +65,7 @@ int main(void){
     
     weight -= LEARNING_R*grad;
     if (epoch % (EPOCHS/10) == 0){
-      printf("Epoch: %d Loss: %f Weight: %f\n", epoch, total_loss, weight);
+      printf("Epoch: %d Loss: %.6e Weight: %f\n", epoch, total_loss, weight);
     }
     
     //if ( epoch+1/EPOCHS == 1 ){
