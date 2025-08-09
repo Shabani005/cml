@@ -4,20 +4,16 @@
 #include <time.h>
 
 
-typedef float sample[2];
+typedef float sample[5];
 
 sample and_gate[] =
 {
-//  x     y
-  {1.0f, 2.0f},
-  {2.0f, 4.0f},
-  {3.0f, 6.0f},
-  {5.0f, 10.0f},
-};
+  {1.0f, 2.0f, 3.0f, 5.0f, 1000.0f}, // x
+  {2.0f, 4.0f, 6.0f, 10.0f, 2000.0f}, // y
+  };
 
 // I may not need to specify size and use the sizeof trick inside the function
 float normalizef(float array[], size_t size){
-  float curr=0;
   float highest = array[0];
   float lowest = array[0];
   size_t sizet = sizeof(float*)/sizeof(float);
@@ -44,15 +40,17 @@ float normalizef(float array[], size_t size){
 
 // normalize data later. allow for arbirtary input size
 
-#define N_SAMPLES (sizeof(and_gate)/sizeof(and_gate[0]))
+#define N_SAMPLES 4 // auto later 
 #define LEARNING_R 0.01f
-#define EPOCHS 100
+#define EPOCHS 1000000
 
 float random_float(){
     return (float) rand() / (float) RAND_MAX;
 }
 
 int main(void){
+  normalize(and_gate[0]);
+  normalize(and_gate[1]);
   srand(time(0));
   float weight = random_float();
   for (int epoch = 0; epoch < EPOCHS; ++epoch){
@@ -60,8 +58,8 @@ int main(void){
     float grad = 0.0f;
 
     for (int i=0; i < N_SAMPLES; ++i){
-      float x = and_gate[i][0]; // make a variadic macro to generalize the way this works
-      float y = and_gate[i][1];
+      float x = and_gate[0][i]; // make a variadic macro to generalize the way this works
+      float y = and_gate[1][i];
       float y_hat = x * weight;
       float error = y_hat - y; //maybe do abs later
       total_loss += error*error;
@@ -83,16 +81,12 @@ int main(void){
     printf("\nTrained weight: %f\n", weight);
   
   for (int i = 0; i < N_SAMPLES; ++i) {
-      float x = and_gate[i][0];
-      float y = and_gate[i][1];
+      float x = and_gate[0][i];
+      float y = and_gate[1][i];
       float y_pred = weight * x;
       printf("x = %f, y = %f, y_pred = %f\n", x, y, y_pred);
   }
   return 0;
 }
 
-int main2(){
-  float testarr[] = {1.0f, 2.0f, -1.0f, 5.0f};
-  size_t size = sizeof(testarr)/sizeof(testarr[0]);
-  normalize(testarr);
-}
+
