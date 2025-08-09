@@ -8,8 +8,8 @@ typedef float sample[5];
 
 sample and_gate[] =
 {
-  {1.0f, 2.0f, 3.0f, 5.0f, 10.0f}, // x
-  {2.0f, 4.0f, 6.0f, 10.0f, 20.0f}, // y
+  {1.0f, 2.0f, 3.0f, 5.0f, 10000.0f}, // x
+  {2.0f, 4.0f, 6.0f, 10.0f, 20000.0f}, // y
   };
 
 // I may not need to specify size and use the sizeof trick inside the function
@@ -36,8 +36,9 @@ float normalizef(float array[], size_t size){
 // normalize data later. allow for arbirtary input size
 
 #define N_SAMPLES 4 // auto later 
-#define LEARNING_R 0.01f
-#define EPOCHS 1000
+#define LEARNING_R 0.1f
+#define EPOCHS 100000
+#define OUTPUT 10
 
 float random_float(){
     return (float) rand() / (float) RAND_MAX;
@@ -64,7 +65,7 @@ int main(void){
     grad /= N_SAMPLES;
     
     weight -= LEARNING_R*grad;
-    if (epoch % (EPOCHS/10) == 0){
+    if (epoch % (EPOCHS/OUTPUT) == 0){
       printf("Epoch: %d Loss: %.6e Weight: %f\n", epoch, total_loss, weight);
     }
     
