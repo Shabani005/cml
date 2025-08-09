@@ -6,7 +6,7 @@
 
 typedef float sample[5];
 
-sample and_gate[] =
+sample timestwo[] =
 {
   {1.0f, 2.0f, 3.0f, 5.0f, 10000.0f}, // x
   {2.0f, 4.0f, 6.0f, 10.0f, 20000.0f}, // y
@@ -45,8 +45,8 @@ float random_float(){
 }
 
 int main(void){
-  normalize(and_gate[0]);
-  normalize(and_gate[1]);
+  normalize(timestwo[0]);
+  normalize(timestwo[1]);
   srand(time(0));
   float weight = random_float();
   for (int epoch = 0; epoch < EPOCHS; ++epoch){
@@ -54,8 +54,8 @@ int main(void){
     float grad = 0.0f;
 
     for (int i=0; i < N_SAMPLES; ++i){
-      float x = and_gate[0][i]; // make a variadic macro to generalize the way this works
-      float y = and_gate[1][i];
+      float x = timestwo[0][i]; // make a variadic macro to generalize the way this works
+      float y = timestwo[1][i];
       float y_hat = x * weight;
       float error = y_hat - y; //maybe do abs later
       total_loss += error*error;
@@ -77,8 +77,8 @@ int main(void){
     printf("\nTrained weight: %f\n", weight);
   
   for (int i = 0; i < N_SAMPLES; ++i) {
-      float x = and_gate[0][i];
-      float y = and_gate[1][i];
+      float x = timestwo[0][i];
+      float y = timestwo[1][i];
       float y_pred = weight * x;
       printf("x = %f, y = %f, y_pred = %f\n", x, y, y_pred);
   }
