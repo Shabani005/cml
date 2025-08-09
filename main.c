@@ -1,3 +1,4 @@
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -11,8 +12,36 @@ sample and_gate[] =
   {1.0f, 2.0f},
   {2.0f, 4.0f},
   {3.0f, 6.0f},
-  {5.0f, 10.0f}
+  {5.0f, 10.0f},
+  {100.0f, 200.0f}
 };
+
+// I may not need to specify size and use the sizeof trick inside the function
+float normalizef(float array[], size_t size){
+  float curr=0;
+  float highest = array[0];
+  float lowest = array[0];
+  size_t sizet = sizeof(float*)/sizeof(float);
+
+  for( size_t i=0; i < size; ++i){
+   if (array[i] > highest){
+      highest = array[i];
+    }
+    if (array[i] < lowest){
+      lowest = array[i];
+    }
+  }
+  printf("lowest: %f\nhighest: %f\n", lowest, highest);
+    for (size_t i = 0; i < size; ++i) {
+        array[i] = (array[i] - lowest) / (highest - lowest);
+    }
+      for (size_t i = 0; i < size; ++i) {
+         printf("%f\n", array[i]);
+   }
+  return *array;
+  }
+
+#define normalize(arr) normalizef((arr), sizeof(arr) / sizeof((arr)[0]))
 
 // normalize data later. allow for arbirtary input size
 
@@ -48,6 +77,7 @@ int main(void){
     }
   }
   printf("\nTrained weight: %f\n", weight);
+  
   for (int i = 0; i < N_SAMPLES; ++i) {
       float x = and_gate[i][0];
       float y = and_gate[i][1];
@@ -55,4 +85,10 @@ int main(void){
       printf("x = %f, y = %f, y_pred = %f\n", x, y, y_pred);
   }
   return 0;
+}
+
+int main2(){
+  float testarr[] = {1.0f, 2.0f, -1.0f, 5.0f};
+  size_t size = sizeof(testarr)/sizeof(testarr[0]);
+  normalize(testarr);
 }
