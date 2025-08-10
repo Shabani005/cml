@@ -12,7 +12,6 @@ sample timestwo[] =
   {2.0f, 4.0f, 6.0f, 10.0f, 20000.0f}, // y
   };
 
-// I may not need to specify size and use the sizeof trick inside the function
 float normalizef(float array[], size_t size){
   float highest = array[0];
   float lowest = array[0];
@@ -32,12 +31,11 @@ float normalizef(float array[], size_t size){
   }
 
 #define normalize(arr) normalizef((arr), sizeof(arr) / sizeof((arr)[0]))
+// there are probably better ways to do this but it is what it is 
 
-// normalize data later. allow for arbirtary input size
-
-#define N_SAMPLES 4 // auto later 
+#define N_SAMPLES 5 // easy to make auto but not bothered
 #define LEARNING_R 0.1f
-#define EPOCHS 100000
+#define EPOCHS 100
 #define OUTPUT 10
 
 float random_float(){
@@ -69,10 +67,6 @@ int main(void){
       printf("Epoch: %d Loss: %.6e Weight: %f\n", epoch, total_loss, weight);
     }
     
-    //if ( epoch+1/EPOCHS == 1 ){
-      //printf("Last Epoch\n=======\nEpoch: %d Loss: %f Weight: %f\n", epoch, total_loss, weight);
-      //break;
-    //}
   }
     printf("\nTrained weight: %f\n", weight);
   
@@ -84,5 +78,3 @@ int main(void){
   }
   return 0;
 }
-
-
