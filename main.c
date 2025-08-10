@@ -33,14 +33,23 @@ float normalizef(float array[], size_t size){
 
 #define N_SAMPLES 5 // easy to make auto but not bothered
 #define LEARNING_R 0.1f
-#define EPOCHS 1000000
+// #define EPOCHS 100000000 // allow passing epochs by argv later. kinda cool 
 #define OUTPUT 10
 
 float random_float(){
     return (float) rand() / (float) RAND_MAX;
 }
 
-int main(void){
+int main(int argc, char** argv){
+  int EPOCHS;
+  if (argc < 2){
+    EPOCHS = 100;
+    printf("Using EPOCH default: %d\n", EPOCHS);
+    printf("<%s> EPOCH_COUNT\n", argv[0]);
+  } else {
+    EPOCHS = atoi(argv[1]);
+  }
+
   float x_arr[] =  {1.0f, 2.0f, 3.0f, 5.0f, 10000.0f};
   float y_arr[] = {2.0f, 4.0f, 6.0f, 10.0f, 20000.0f};
   normalize(x_arr);
