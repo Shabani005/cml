@@ -17,8 +17,6 @@ float distance(point a, point b){
   return sqrtf((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
 }
 
-
-
 int main(){
   point data[] = {
     {1.0, 2.0, 0},
