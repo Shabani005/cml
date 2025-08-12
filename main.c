@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 // #include <math.h>
+
 // make an allocator for this later
 typedef struct{
   float* x;
