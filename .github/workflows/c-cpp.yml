@@ -20,6 +20,7 @@ jobs:
       - name: Build using Makefile
         run: make examples
 
-      - name: Run compiled program
-        run: ./knn
-        run: ./linreg
+      - name: Run compiled program 
+        run: |
+          ./knn
+          ./linreg
