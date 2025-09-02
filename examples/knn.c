@@ -1,105 +1,13 @@
-#include <stddef.h>
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-
-#define K_NUM 5
+#define CML_STRIP_PREFIX
+#define CML_IMPLEMENTATION
+#include "cml.h"
 
 
-typedef struct{
-  float *features;
-  int label;
-} point;
 
-typedef struct{
-  point* points;
-  size_t size;
-  size_t dim;
-} dataset;
 
-typedef struct{
-  point point;
-  float dist;
-} tosort;
-
-int compare_tosort(const void *a, const void *b) {
-    float d1 = ((tosort *)a)->dist;
-    float d2 = ((tosort *)b)->dist;
-    return (d1 > d2) - (d1 < d2);
-}
-
-float distance_vec(point a, point b, size_t dim) {
-    float sum = 0.0f;
-    for (size_t i = 0; i < dim; i++) {
-        float diff = a.features[i] - b.features[i];
-        sum += diff * diff;
-    }
-    return sqrtf(sum);
-}
-
-void shuffle_dataset(point *arr, size_t n) {
-    for (size_t i = n - 1; i > 0; i--) {
-        size_t j = rand() % (i + 1);
-        point tmp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = tmp;
-    }
-}
-
-int knn_predict(dataset train, point test_pt, int num_classes){
-  int *label_count = calloc(num_classes, sizeof(int));
-  tosort* sarray = malloc(sizeof(tosort) * train.size);
-
-  for (int i=0; i < train.size; ++i){
-    sarray[i].point = train.points[i];
-    sarray[i].dist = distance_vec(test_pt, train.points[i], train.dim);
-  }
-  qsort(sarray, train.size, sizeof(tosort), compare_tosort);
-  
-  for (size_t i = 0; i < K_NUM; ++i){
-    label_count[sarray[i].point.label]++;
-  }
-
-  int predicted_label = -1;
-  int max_count = -1;
-
-  for (int lbl = 0; lbl < num_classes; ++lbl){
-    if (label_count[lbl] > max_count){
-    max_count = label_count[lbl];
-    predicted_label = lbl;
-    }
-  }
-  return predicted_label;
-}
-
-/* int main(){
-  point data[] = {
-    {2.0, 4.0, 0},
-    {2.0, 3.0, 0},
-    {6.0, 1.0, 0},
-    {9.0, 1.0, 0},
-    {7.0, 2.0, 1},
-    {6.0, 2.0, 1},
-    {3.0, 4.0, 1},
-    {5.0, 4.0, 1},
-    {4.0, 4.0, 1},
-    {12.0, 1.0, 1}
-  };
-  
-  dataset df = {data, sizeof(data)/sizeof(data[0])};
-  
-  point test_pt = {2, 1, -1};
-
-  for (size_t i=0; i < df.size; ++i){
-    printf("distance between test_pt and point %zu = %f\n",i+1, distance_vec2(test_pt, df.points[i]));
-  }
-}*/
 
 int main() {
     srand(time(NULL));
-
-    size_t dim = 4; // number of features for Iris
 
 float iris_data[][4] = {
     {5.1, 3.5, 1.4, 0.2}, {4.9, 3.0, 1.4, 0.2}, {4.7, 3.2, 1.3, 0.2},
@@ -170,48 +78,7 @@ int iris_labels[] = {
     2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
     2, 2
 };
-    size_t total_size = sizeof(iris_labels) / sizeof(iris_labels[0]);
 
-    point *points = malloc(total_size * sizeof(point));
-    if (!points) {
-        fprintf(stderr, "Memory allocation failed\n");
-        return 1;
-    }
-
-    for (size_t i = 0; i < total_size; i++) {
-        points[i].features = malloc(dim * sizeof(float));
-        for (size_t j = 0; j < dim; j++) {
-            points[i].features[j] = iris_data[i][j];
-        }
-        points[i].label = iris_labels[i];
-    }
-
-    // Shuffle before splitting
-    shuffle_dataset(points, total_size);
-
-    size_t train_size = (size_t)(total_size * 0.7);
-    dataset train = {points, train_size, dim};
-    dataset test = {points + train_size, total_size - train_size, dim};
-
-    int correct = 0;
-    for (size_t i = 0; i < test.size; ++i) {
-        int pred = knn_predict(train, test.points[i], 3);
-        printf("Test point (");
-        for (size_t j = 0; j < dim; j++) {
-            printf("%.1f%s", test.points[i].features[j],
-                   (j < dim - 1) ? ", " : "");
-        }
-        printf(") true=%d pred=%d\n", test.points[i].label, pred);
-        if (pred == test.points[i].label) correct++;
-    }
-
-    printf("\nAccuracy: %.2f%%\n", (100.0 * correct) / test.size);
-
-    // Free memory
-    for (size_t i = 0; i < total_size; i++) {
-        free(points[i].features);
-    }
-    free(points);
-
+    knn_train(cml_knn_fit(iris_data, iris_labels, 0.5));
     return 0;
 }
