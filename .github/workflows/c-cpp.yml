@@ -18,7 +18,8 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y build-essential
 
       - name: Build using Makefile
-        run: make test
+        run: make examples
 
       - name: Run compiled program
-        run: ./mlc
+        run: ./knn
+        run: ./linreg
