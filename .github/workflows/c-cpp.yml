@@ -18,7 +18,7 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y build-essential
 
       - name: Build using Makefile
-        run: make examples
+        run: make -B
 
       - name: Run compiled program 
         run: |
