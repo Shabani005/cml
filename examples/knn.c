@@ -2,9 +2,8 @@
 #define CML_IMPLEMENTATION
 #include "cml.h"
 
-
-
-
+#undef K_NUM
+#define K_NUM 7
 
 int main() {
     srand(time(NULL));
@@ -79,6 +78,6 @@ int iris_labels[] = {
     2, 2
 };
 
-    knn_train(cml_knn_fit(iris_data, iris_labels, 0.5));
+    knn_train(knn_fit(iris_data, iris_labels, 0.5));
     return 0;
 }
