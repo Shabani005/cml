@@ -236,7 +236,6 @@ float cml_train_linear(sample data, int epochs){
   }
   return weight;
 }
-
 #endif
 
 #ifdef CML_STRIP_PREFIX
