@@ -60,7 +60,7 @@ int cml_compare_tosort(const void *a, const void *b);
 float cml_distance_vec(point a, point b, size_t dim);
 void cml_shuffle_dataset(point *arr, size_t n);
 int cml_knn_predict(dataset train, point test_pt, int num_classes);
-void cml_knn_train(dataset_split full_data);
+void cml_knn_train(dataset_split full_data); //#undef K_NUM -> #define K_NUM <custom_value>
 dataset_split cml_knn_fit_impl(size_t n, size_t dim, float data[n][dim], int *labels, float train);
 
 // LINREG FUNCTIONS 
