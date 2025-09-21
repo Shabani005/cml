@@ -64,7 +64,7 @@ void cml_knn_train(dataset_split full_data); //#undef K_NUM -> #define K_NUM <cu
 dataset_split cml_knn_fit_impl(size_t n, size_t dim, float data[n][dim], int *labels, float train);
 
 // LINREG FUNCTIONS 
-float* cml_normalizef(float array[], size_t size);
+float* cml_normalizef(float array[], size_t size); // Use Macro Instead
 sample cml_fit_linear_impl(float *x_arr, float* y_arr, size_t size);
 float cml_train_linear(sample data, int epochs);
 
@@ -210,12 +210,12 @@ float cml_train_linear(sample data, int epochs){
     float grad = 0.0f;
 
     for (int i=0; i < data.size; ++i){
-      float x = data.x[i]; // make a variadic macro to generalize the way this works
+      float x = data.x[i]; 
       float y = data.y[i];
       float y_hat = x * weight;
       float error = y_hat - y; 
       total_loss += error*error;
-      grad += 2*error*x;
+      grad += error*x;
     }
     total_loss /= data.size;
     grad /= data.size;
@@ -240,7 +240,7 @@ float cml_train_linear(sample data, int epochs){
 #endif
 
 #ifdef CML_STRIP_PREFIX
- #define compare_tosort    cml_compare_tosort
+#define compare_tosort    cml_compare_tosort
 #define distance_vec       cml_distance_vec
 #define shuffle_dataset    cml_shuffle_dataset
 #define knn_predict        cml_knn_predict
