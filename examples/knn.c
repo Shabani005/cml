@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #define CML_STRIP_PREFIX
 #define CML_IMPLEMENTATION
 #include "cml.h"
@@ -5,7 +6,7 @@
 #undef K_NUM
 #define K_NUM 5
 
-int main() {
+int main(int argc, char **argv) {
     srand(time(NULL));
 
 float iris_data[][4] = {
@@ -77,7 +78,8 @@ int iris_labels[] = {
     2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
     2, 2
 };
-  
-    knn_train(knn_fit(iris_data, iris_labels, 0.2));
+    float t_size = 0.2;
+    if (argc > 1) t_size = (float)atof(argv[1]);
+    knn_train(knn_fit(iris_data, iris_labels, t_size)); // trains on 20% of data
     return 0;
 }

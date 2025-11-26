@@ -53,7 +53,7 @@ typedef struct{
 
 // GENERAL FUNCTIONS
 float cml_random_float();
-
+float cml_absf(float a);
 
 // KNN FUNCTIONS
 int cml_compare_tosort(const void *a, const void *b); 
@@ -69,6 +69,11 @@ sample cml_fit_linear_impl(float *x_arr, float* y_arr, size_t size);
 float cml_train_linear(sample data, int epochs);
 
 #ifdef CML_IMPLEMENTATION
+float cml_absf(float a){
+  if (a < 0) return a*-1;
+  return a;
+}
+
 int cml_compare_tosort(const void *a, const void *b) {
     float d1 = ((tosort *)a)->dist;
     float d2 = ((tosort *)b)->dist;
@@ -213,7 +218,7 @@ float cml_train_linear(sample data, int epochs){
       float x = data.x[i]; 
       float y = data.y[i];
       float y_hat = x * weight;
-      float error = y_hat - y; 
+      float error = cml_absf(y - y_hat); //maybe abs
       total_loss += error*error;
       grad += error*x;
     }
@@ -240,7 +245,7 @@ float cml_train_linear(sample data, int epochs){
 #endif
 
 #ifdef CML_STRIP_PREFIX
-#define compare_tosort    cml_compare_tosort
+#define compare_tosort     cml_compare_tosort
 #define distance_vec       cml_distance_vec
 #define shuffle_dataset    cml_shuffle_dataset
 #define knn_predict        cml_knn_predict
@@ -252,4 +257,5 @@ float cml_train_linear(sample data, int epochs){
 #define knn_train          cml_knn_train
 #define knn_predict        cml_knn_predict
 #define fit_linear_impl    cml_fit_linear_impl
+#define absf               cml_absf
 #endif
